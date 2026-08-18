@@ -1,234 +1,511 @@
 ---
-title: "Contributing Guide | Guides Concepts in Refine v5"
+title: "Contributing Guide | Guides Concepts in Refine"
 display_title: "Contributing"
 sidebar_label: "Contributing"
-description: "Integrate Contributing in Refine v5. Learn best practices. Learn best practices for changes and changeset for real-world React admin panels."
+description: "Comprehensive step-by-step contributing guide for Refine. Learn how to set up your local environment, develop packages, run tests, format code, create changesets, and submit pull requests."
 ---
 
-We follow a [code of conduct](https://github.com/refinedev/refine/blob/main/CODE_OF_CONDUCT) when participating in the community. Please read it before you make any contributions.
+First off, thank you for considering contributing to Refine! 🎉
 
-- If you plan to work on an issue, mention so in the issue page before you start working on it.
-- If you plan to work on a new feature, create an issue and discuss it with other community members/maintainers.
-- Ask for help in our [community room](https://discord.gg/refine).
+Refine is an open-source, React-based framework designed for building data-intensive enterprise applications, internal tools, admin panels, and dashboards rapidly. Community contributions are what make Refine thrive. Whether you are fixing a typo in the documentation, reporting a bug, or building a whole new feature or data provider, your help is warmly welcomed!
 
-## Ways to contribute
+We follow a [Code of Conduct](https://github.com/refinedev/refine/blob/main/CODE_OF_CONDUCT.md) to ensure an inclusive and welcoming environment for everyone. Please review it before contributing.
 
-- **Stars on GitHub**: If you're a Refine user and enjoy using our platform, don't forget to star it on [GitHub](https://github.com/refinedev/refine)! 🌟
-- **Improve documentation**: Good documentation is imperative to the success of any project. You can make our documents the best they need to be by improving their quality or adding new ones.
-- **Give feedback**: We're always looking for ways to make Refine better, please share how you use Refine, what features are missing and what is done good via [GitHub Discussions](https://github.com/refinedev/refine/discussions) or [Discord](http://discord.gg/refine).
-- **Share Refine**: Help us reach people. Share [Refine repository](https://github.com/refinedev/refine) with everyone who can be interested.
-- **Contribute to codebase**: your help is needed to make this project the best it can be! You could develop new features or fix [existing issues](https://github.com/refinedev/refine/issues) - every contribution will be welcomed with great pleasure!
-- **Share your own integrations**: If you've created an integration for Refine, this can be a data provider, an auth provider, a UI integration or a routing integration, please share it with us! Refine's community has been growing rapidly and we're sure that your integration will be useful for many people. We'll be happy to add your integration to our [integrations page](/core/integrations) along with the other community made integrations and share it with our community.
+---
 
-## Setting Up Your Environment for Development
+## Ways to Contribute
 
-:::simple Requirements
+There are many valuable ways to get involved with Refine:
 
-- [Node.js](https://nodejs.org/en/) version 18 or higher
-- [Git](https://git-scm.com/) and [GitHub](https://github.com) account
-- [pnpm](https://pnpm.io/) version 9 or higher
-- [Latest Microsoft Visual C++ Redistributable Version](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+- 🌟 **Star the Repository**: Show your appreciation by starring Refine on [GitHub](https://github.com/refinedev/refine).
+- 📖 **Improve Documentation**: Fix errors, clarify confusing explanations, or write new guides and tutorials.
+- 🐛 **Report Bugs**: Submit bug reports with clear reproduction steps on [GitHub Issues](https://github.com/refinedev/refine/issues).
+- 💡 **Suggest Features & Ideas**: Share ideas for new hooks, UI integrations, or optimizations via [GitHub Discussions](https://github.com/refinedev/refine/discussions) or [Discord](https://discord.gg/refine).
+- 💻 **Contribute Code**: Solve open issues or build requested features across Refine packages and examples.
+- 🔌 **Share Community Integrations**: Have you built a custom data provider, auth provider, or UI integration? Share it on our [Integrations page](/core/integrations) with the community.
+- 💬 **Help Fellow Developers**: Answer questions and help newcomers in our [Discord community](https://discord.gg/refine).
+
+---
+
+## Finding Something to Work On
+
+If you are a first-time contributor looking for a good starting point:
+
+1. **`good first issue`**: Check out issues tagged with [`good first issue`](https://github.com/refinedev/refine/labels/good%20first%20issue). These tasks have a well-defined scope and are beginner-friendly.
+2. **`help wanted`**: Look at issues labeled [`help wanted`](https://github.com/refinedev/refine/labels/help%20wanted) for community-requested features and enhancements.
+3. **Documentation Tasks**: Check open [documentation issues](https://github.com/refinedev/refine/labels/documentation) if you prefer writing docs, fixing guides, or improving code samples.
+
+:::simple Tip for Contributors
+
+Before starting work on an issue, please leave a comment on the issue page expressing your interest and asking to be assigned. This lets the maintainers and community know that someone is actively working on it and avoids duplicated effort.
 
 :::
 
-If your environment is ready, you can [fork the Refine repository](https://github.com/refinedev/refine/fork) and clone it to your local machine.
+---
 
-### Cloning the Repository
+## Step-by-Step Contribution Guide
 
-After you fork the Refine repository, you need to clone it to your local machine. Instead of using the `refinedev/refine` repository, it's recommended to use your fork. This way, you can push your changes to your fork and create a pull request from there.
+Here is the complete end-to-end workflow to contribute to Refine:
 
-```sh
-git clone https://github.com/refinedev/refine.git
+```
+Fork & Clone ➔ Install Dependencies ➔ Create Branch ➔ Develop & Test ➔ Lint & Format ➔ Create Changeset ➔ Commit & PR
 ```
 
-### Installing dependencies
+---
 
-After you clone the repository, you need to install the dependencies. We use pnpm as package manager with workspaces feature. You can run the following command to install, link dependencies and build packages:
+### Step 1: Prerequisites & Environment Setup
+
+Make sure your development machine has the following tools installed:
+
+:::simple System Requirements
+
+- **[Node.js](https://nodejs.org/en/)**: Version `18.x` or higher (we recommend using [`nvm`](https://github.com/nvm-sh/nvm), [`fnm`](https://github.com/Schniz/fnm), or [`volta`](https://volta.sh/)).
+- **[pnpm](https://pnpm.io/)**: Version `9.x` or higher (Refine uses pnpm workspaces).
+  ```sh title="Terminal"
+  npm install -g pnpm@latest
+  ```
+- **[Git](https://git-scm.com/)** and a **[GitHub](https://github.com/)** account.
+- **[Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)** _(Windows only)_: Required if compiling native dependencies.
+
+:::
+
+:::simple Recommended VS Code Extensions
+
+- **[Biome](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)**: For fast linting and formatting on save.
+- **[Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)**: For formatting markdown files.
+
+:::
+
+---
+
+### Step 2: Fork and Clone the Repository
+
+1. **Fork the repository**: Navigate to [github.com/refinedev/refine](https://github.com/refinedev/refine) and click the **Fork** button in the top-right corner.
+2. **Clone your fork**:
+   ```sh title="Terminal"
+   git clone https://github.com/<YOUR-USERNAME>/refine.git
+   cd refine
+   ```
+3. **Add the upstream remote**:
+   ```sh title="Terminal"
+   git remote add upstream https://github.com/refinedev/refine.git
+   git fetch upstream
+   ```
+4. **Create a new branch**:
+   Always branch off the latest `main` branch with a descriptive branch name:
+   ```sh title="Terminal"
+   git checkout main
+   git pull upstream main
+   git checkout -b fix/issue-description
+   # or
+   git checkout -b feat/feature-name
+   ```
+
+---
+
+### Step 3: Install Dependencies & Monorepo Structure
+
+Refine is structured as a monorepo powered by **pnpm workspaces**.
+
+To install all dependencies across the entire monorepo and link packages:
 
 ```sh title="Terminal"
 pnpm install
 ```
 
-If you don't want to wait for building packages, you can use
+:::simple Fast Install Tip
+
+If you want to skip running package build scripts during the initial install to speed up setup:
 
 ```sh title="Terminal"
 pnpm install --ignore-scripts
 ```
 
-### Building packages
+:::
 
-You can use `pnpm build` command with `--scope` flag to build packages & examples.
+#### Monorepo Structure Overview
 
-```sh title="Terminal"
-pnpm build --scope @refinedev/antd --scope base-antd
+```
+refine/
+├── packages/              # All publishable Refine npm packages
+│   ├── core/              # @refinedev/core (Headless core framework)
+│   ├── antd/              # @refinedev/antd (Ant Design integration)
+│   ├── mui/               # @refinedev/mui (Material UI integration)
+│   ├── mantine/           # @refinedev/mantine (Mantine integration)
+│   ├── chakra-ui/         # @refinedev/chakra-ui (Chakra UI integration)
+│   ├── simple-rest/       # @refinedev/simple-rest (REST Data Provider)
+│   ├── graphql/           # @refinedev/graphql (GraphQL Data Provider)
+│   ├── supabase/          # @refinedev/supabase (Supabase Data Provider)
+│   ├── react-router/      # @refinedev/react-router (React Router integration)
+│   ├── nextjs-router/     # @refinedev/nextjs-router (Next.js router integration)
+│   ├── devtools/          # @refinedev/devtools (Refine Devtools)
+│   ├── cli/               # @refinedev/cli (Refine CLI)
+│   └── ...                # Additional packages and providers
+├── examples/              # 250+ example apps demonstrating integrations
+│   ├── base-antd/         # Basic Ant Design starter app
+│   ├── base-mui/          # Basic Material UI starter app
+│   └── ...
+├── documentation/         # Refine official Docusaurus documentation website
+├── .changeset/            # Changeset definitions and configurations
+└── .github/               # GitHub workflows, issue/PR templates
 ```
 
-### Working with packages
+:::simple Resetting / Cleaning Environment
+
+If you ever experience corrupted node_modules or cache issues, run:
+
+```sh title="Terminal"
+pnpm coffee
+# or
+pnpm nuke && pnpm install
+```
+
+:::
+
+---
+
+### Step 4: Developing Packages and Running Examples
+
+#### Building Packages
+
+You can build individual packages or all packages using the `--scope` flag:
+
+```sh title="Terminal"
+# Build a specific package
+pnpm build --scope @refinedev/core
+
+# Build multiple packages
+pnpm build --scope @refinedev/core --scope @refinedev/antd
+
+# Build all packages across the repository
+pnpm build:all
+```
+
+#### Running in Development (Watch) Mode
+
+To develop a package while seeing changes reflected live in an example application, start them together:
 
 ```sh title="Terminal"
 pnpm dev --scope @refinedev/antd --scope base-antd
 ```
 
-After running this command, you should see the packages and examples you've started in watch mode. You can now make changes in any of them and see the results in the browser.
+**How it works:**
 
-If you make a change in the `@refinedev/antd` package, you will see that right after the compilation, the `base-antd` example will re-compile and you will see the changes in the browser.
+- When you edit code in `packages/antd/src`, the package automatically recompiles.
+- The `base-antd` example immediately re-bundles and hot-reloads in your browser (usually at `http://localhost:3000` or `http://localhost:5173`).
 
 <details>
+<summary><b>How to add a dependency to a package?</b></summary>
 
-<summary>How to add a dependency to a package?</summary>
-
-Navigate to the folder and run the following command:
+To add a new dependency to a specific package:
 
 ```sh title="Terminal"
+# From the repository root:
+pnpm --filter @refinedev/core add <package-name>
+
+# Or navigate to the package folder:
 cd packages/core
-pnpm add my-new-dep
+pnpm add <package-name>
 ```
 
 </details>
 
-### Running Tests
+---
 
-Just like the `dev` command, we can use the `test` command to run tests for the packages and examples we're working on.
+### Step 5: Working on Documentation
 
-```sh title="Terminal"
-pnpm test -- --scope @refinedev/antd
-```
+Refine's documentation is built with [Docusaurus](https://docusaurus.io/).
 
-:::simple Good to know
-
-- Refine uses [Jest](https://jestjs.io/) as the test runner and [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) for testing React components. For E2E tests, we're using [Cypress](https://www.cypress.io).
-- We're expecting to see proper tests for each feature/bugfix you make. If you're not sure how to write tests for your feature/bugfix, please ask for help in our [community room](https://discord.gg/refine).
-
-:::
-
-## Working on Documentation
-
-Refine documentation is built with [Docusaurus](https://docusaurus.io/). Documentation is handled separately from Lerna, so you need to install the dependencies and start the documentation separately.
+You can run documentation scripts either from the repository root or inside the `documentation/` folder:
 
 ```sh title="Terminal"
+# From the repository root:
+pnpm dev:docs
+
+# Or inside the documentation directory:
 cd documentation
 pnpm install
-pnpm dev:docs
+pnpm dev:docs     # Fast docs dev server (skips type and prop table generation)
+pnpm dev:blog     # Start blog section only
+pnpm dev          # Full documentation server (including all generations)
+pnpm build        # Verify production build of the documentation
+pnpm serve        # Preview the production build locally
 ```
 
-:::simple Documentation Scripts
+#### Creating Previews and Code Samples with Sandpack
 
-- You can also use `pnpm dev:blog` to start the blog section of the documentation.
+Refine uses [CodeSandbox Sandpack](https://sandpack.codesandbox.io/) to provide live editable previews in the documentation. We provide a custom `<Sandpack />` component to embed runnable Refine apps directly in doc pages.
 
-- `dev:docs` and `dev:blog` scripts start a portion of the documentation and skips the unnecessary parts to speed up the development process such as type and props table generation, checklist generation, etc. If you want to start the documentation with all the features, you can use `pnpm dev` command.
+- [Example usage in `useForm` hook documentation](/core/docs/data/hooks/use-form/#usage)
+- [Source code for Sandpack example](https://github.com/refinedev/refine/blob/main/documentation/docs/data/hooks/use-form/basic-usage.tsx)
 
-- To create a production build of the documentation, you can use `pnpm build` command. Then, you can use `pnpm serve` command to serve the production build in your local machine.
+---
+
+### Step 6: Running Tests
+
+Refine uses [Vitest](https://vitest.dev/) and [Jest](https://jestjs.io/) with [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) for unit and component tests, and [Cypress](https://www.cypress.io/) for end-to-end (E2E) tests.
+
+```sh title="Terminal"
+# Run tests for a specific package
+pnpm test --scope @refinedev/core
+
+# Run tests for multiple packages
+pnpm test --scope @refinedev/core --scope @refinedev/antd
+
+# Run tests with coverage
+pnpm test:coverage --scope @refinedev/core
+
+# Run all tests across the repository
+pnpm test:all
+```
+
+#### End-to-End (E2E) Tests
+
+```sh title="Terminal"
+# Open interactive Cypress UI
+pnpm cypress:open
+
+# Run Cypress headless in Chrome
+pnpm cypress:run
+```
+
+:::simple Testing Guidelines
+
+- Every bug fix should include a unit test that reproduces the bug and verifies the fix.
+- Every new feature should include comprehensive tests covering typical use cases and edge cases.
+- If you need guidance on writing tests, feel free to ask in our [Discord community room](https://discord.gg/refine).
 
 :::
 
-### Creating Previews and Code Samples
+---
 
-We're using [Codesandbox's Sandpack](https://sandpack.codesandbox.io) to provide live previews and code editors in our documentation. We've created a custom `<Sandpack />` component to make it easier to use with Refine and provided some predefined configurations for the most common use cases.
+### Step 7: Linting & Formatting
 
-Check out the example usage of `<Sandpack />` in Core API's `useForm` hook documentation:
+Refine uses [Biome](https://biomejs.dev/) for linting & formatting across JavaScript, TypeScript, and JSON files, [Prettier](https://prettier.io/) for Markdown files, and [Syncpack](https://github.com/JamieMason/syncpack) for workspace dependency consistency.
 
-- [useForm Documentation](/core/docs/data/hooks/use-form/#usage)
-- [Source Code for Sandpack](https://github.com/refinedev/refine/blob/main/documentation/docs/data/hooks/use-form/basic-usage.tsx)
-- [Source Code for Markdown](https://github.com/refinedev/refine/blob/main/documentation/docs/data/hooks/use-form/index)
+```sh title="Terminal"
+# Check for linting and formatting issues
+pnpm lint
 
-## Committing Your Work and Preparing a Pull Request
+# Automatically fix linting and formatting issues
+pnpm lint:fix
 
-Refine is a monorepo with multiple packages and examples. To make sure we're keeping things clean and in order, we're using couple of tools to enforce a good development experience.
+# Check consistency of package.json dependencies across the monorepo
+pnpm sp
+```
 
-### Linting & Formatting
+:::simple VS Code Setup
 
-We are using [biome](https://biomejs.dev) for linting & formatting across the repository.
+We highly recommend installing the [Biome VS Code extension](https://biomejs.dev/reference/vscode/) and enabling formatting on save to avoid unexpected CI failures.
 
-We suggest using [biome VSCode extension](https://biomejs.dev/reference/vscode/) to handle linting & formatting on your local environment to avoid unexpected failures on CI.
+:::
 
-Since biome doesn't have markdown support yet, we are using prettier to format markdown files.
+---
 
-### Commit Convention
+### Step 8: Conventional Commit Guidelines
 
-Commit messages are essential to keep everything clear in our development process. We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to keep our commit messages consistent and easy to understand.
+Refine enforces the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification using [commitlint](https://commitlint.js.org/).
 
-We're expecting to see proper commit messages with the following format:
+#### Commit Message Format
 
 ```
 <type>(optional scope): <description>
 ```
 
-An example commit message:
+#### Common Types
 
-```
-feat(core): add useAwesome hook
+- `feat`: A new feature or capability
+- `fix`: A bug fix
+- `docs`: Documentation improvements or additions
+- `refactor`: Code changes that neither fix a bug nor add a feature
+- `test`: Adding or updating test cases
+- `perf`: Code changes that improve performance
+- `chore`: Tooling, workflow, or dependency updates
+
+#### Examples
+
+```sh
+feat(core): add autoSave support to useForm
+fix(antd): handle undefined value in DateField
+docs(contributing): make contribution guide beginner-friendly
+test(simple-rest): add unit tests for custom header handling
 ```
 
 :::simple Good to know
 
-We're using [commitlint](https://commitlint.js.org/) to enforce conventional commits. If you don't follow the conventional commit format, you will see an error message when you try to commit your changes or a Github action will fail when you create a pull request.
+Husky and commitlint validate your commit messages automatically when committing. If the commit message format does not follow Conventional Commits, the commit will be rejected.
 
 :::
 
-### Creating a Changeset
+---
 
-To manage our releases, changelogs and versioning, we're using [Changesets](https://github.com/changesets/changesets) and [Changesets GitHub Action](https://github.com/changesets/action) to automate the process. Changesets are designed to make your workflows easier, by allowing the person making contributions to make key decisions when they are making their contribution. Changesets hold two key bits of information: a version type (following semver), and change information to be added to a changelog.
+### Step 9: Creating a Changeset
 
-Follow the steps below to create a changeset:
+Refine uses [Changesets](https://github.com/changesets/changesets) to automate semantic versioning and changelog generation.
 
-```sh
+#### When is a Changeset Required?
+
+- **Required**: For any bug fix, feature, performance enhancement, or breaking change made inside `packages/*` or `create-refine-app`.
+- **Not Required**: For pure documentation changes (`documentation/*`), examples, typos, or internal CI/tooling adjustments.
+
+#### How to Create a Changeset
+
+Run the Changeset CLI from the repository root:
+
+```sh title="Terminal"
 pnpm changeset
 ```
 
-After you run this command, you will be asked couple of questions:
+Follow the interactive prompts:
 
-- Select the package(s) you are modifying
-- Choose one of `major/patch/minor` according to your change
-- Add explanation about the changes
+1. **Select Package(s)**: Use the arrow keys and <kbd>Space</kbd> to select the package(s) you modified, then press <kbd>Enter</kbd>.
+2. **Select Version Bump Type**:
+   - `patch`: For bug fixes, non-breaking internal changes, and minor improvements.
+   - `minor`: For new features and backwards-compatible API additions.
+   - `major`: For breaking changes (usually coordinated with maintainers).
+3. **Write a Summary**: Write a clear, concise summary of the change and reference the relevant issue number (`#1234`).
 
-After you answer these questions, a changeset file will be created under `.changeset` directory. You can commit this file with your changes.
+#### Example Changeset Files
 
-:::simple Good to know
-
-- We're expecting a changeset to include a description about the changes you've made and how it affects the users. Please make sure you provide a good description for your changeset.
-- It's required for a changeset to provide a link to the issue that is related with. If you don't have an issue for your changes, please create one and link it to your changeset.
-- You'll be able to edit your changeset after you create it. If you need to make changes to your changeset, you can edit it under `.changeset` directory.
-
-:::
-
-Check out the following examples to see how changesets should be formatted:
-
-```md title=".changeset/some-changeset.md"
+```md title=".changeset/happy-tigers-sing.md"
 ---
 "@refinedev/core": minor
 ---
 
-feat: added x feature #ISSUE_ID
+feat: add `autoSave` configuration to `useForm` hook #1234
 
-Now with x feature, you can do y.
+Now you can enable automatic draft saving directly in `useForm` by providing the `autoSave` property.
 
 Resolves #1234
 ```
 
 or
 
-```md title=".changeset/some-other-changeset.md"
+```md title=".changeset/clever-foxes-run.md"
 ---
-"@refinedev/mantine": patch
+"@refinedev/antd": patch
 ---
 
-fix: issue with x. #ISSUE_ID
+fix: prevent select dropdown flickering during live search #5678
 
-We had an edge where it causes x issue to happen, now it's fixed.
+Resolved an issue where rapid typing in the search box caused the dropdown menu to flicker and close unexpectedly.
 
 Fixes #5678
 ```
 
-### Creating a Pull Request
+Stage and commit the generated changeset file with your changes:
 
-After you commit your changes and create a changeset, you can push your changes to your fork and [create a pull request](https://github.com/refinedev/refine/compare). When you create a pull request, you will see a Github action that will run the tests and check if your changeset is valid. Our maintainers will review your changes in short time and merge your pull request if everything is good.
+```sh title="Terminal"
+git add .changeset/
+git commit -m "chore(changeset): add changeset for antd select fix"
+```
 
-Our Pull Request template is designed to make sure you provide all the necessary information about your changes. Please make sure you fill the template with the required information.
+---
 
-We're looking forward to see your contributions! 🎉
+### Step 10: Opening a Pull Request
+
+Once your code is ready, tested, formatted, and has a changeset (if needed), submit your Pull Request!
+
+1. **Push your branch to your GitHub fork**:
+   ```sh title="Terminal"
+   git push -u origin fix/issue-description
+   ```
+2. **Open the Pull Request**:
+   - Go to the [Refine Pull Requests](https://github.com/refinedev/refine/pulls) page.
+   - Click **New pull request** or **Compare & pull request**.
+   - Make sure `base: main` is selected.
+3. **Fill out the Pull Request Template**:
+   - Check the checklist items (commit format, tests, docs, changeset).
+   - Describe the **Current Behavior** and the **New Behavior**.
+   - Link the relevant issue (e.g. `Fixes #1234`).
+4. **CI Checks**:
+   - Automated GitHub Actions will run tests, Biome linting, and verify changesets.
+   - If any checks fail, review the logs, fix the issues locally, and push new commits to your branch.
+5. **Review and Collaboration**:
+   - Maintainers will review your PR and provide feedback.
+   - Once approved, maintainers will label it as `pr-ready` and merge it into `main`!
+
+---
 
 ## Release Cycle
 
-Refine follows a monthly release cycle. We're releasing a new version every month with the changes we've made in that month. Unless there's a critical bugfix, we're not releasing a new version in the middle of the month. If your PR is approved and ready to be merged, it will be labeled as `pr-ready` and will be merged to the `main` branch with the next release.
+Refine follows a predictable release cycle:
 
-Each approved PR will be included to a milestone, these milestones are used to track the progress of the monthly release.
+- **Monthly Releases**: Refine publishes regular releases every month containing all features and fixes merged during that cycle.
+- **Milestones**: Approved and merged PRs are attached to a milestone tracking the upcoming monthly release.
+- **Patch Releases**: Critical bug fixes are released immediately as out-of-band patch versions.
+
+---
+
+## Troubleshooting & Frequently Asked Questions
+
+<details>
+<summary><b>pnpm install fails or reports lockfile / workspace errors</b></summary>
+
+Clean your local workspace artifacts and re-install:
+
+```sh title="Terminal"
+pnpm coffee
+# or
+pnpm nuke && pnpm install
+```
+
+</details>
+
+<details>
+<summary><b>My commit failed due to commitlint</b></summary>
+
+Make sure your commit message follows the format `type(scope): description`. You can fix your previous commit message with:
+
+```sh title="Terminal"
+git commit --amend -m "fix(core): resolve data provider error handling"
+```
+
+</details>
+
+<details>
+<summary><b>The Changeset bot flagged that a changeset is missing on my PR</b></summary>
+
+If your PR alters any package in `packages/`, run `pnpm changeset` locally, choose the affected package and bump level, write a description referencing your issue, and push the newly generated file in `.changeset/`.
+
+</details>
+
+<details>
+<summary><b>Biome lint or formatting failed in CI</b></summary>
+
+Run the automatic fix command locally:
+
+```sh title="Terminal"
+pnpm lint:fix
+```
+
+Then stage, commit, and push the formatted files.
+
+</details>
+
+<details>
+<summary><b>How do I keep my branch up to date with upstream/main?</b></summary>
+
+Sync your local branch with upstream changes:
+
+```sh title="Terminal"
+git fetch upstream
+git rebase upstream/main
+# or git merge upstream/main
+git push origin <your-branch-name> --force-with-lease
+```
+
+</details>
+
+---
+
+## Getting Help & Community
+
+Have questions or need assistance during your contribution journey?
+
+- 💬 **Discord**: Join our [Discord community](https://discord.gg/refine) and chat in `#contributing`.
+- 💡 **GitHub Discussions**: Propose ideas on [GitHub Discussions](https://github.com/refinedev/refine/discussions).
+- 🐛 **GitHub Issues**: Report bugs and browse tasks on [GitHub Issues](https://github.com/refinedev/refine/issues).
+- 🌐 **Website & Docs**: Explore documentation at [refine.dev](https://refine.dev).
+
+Thank you for contributing to Refine! 🚀
